@@ -6,8 +6,8 @@
  *
  * 外部网页示例：
  *
- * <script src="https://cdn.jsdelivr.net/gh/hemiao6669/dowload_SDK@v1.0.0/vendor/crypto-js/4.2.0/crypto-js.min.js"></script>
- * <script src="https://cdn.jsdelivr.net/gh/hemiao6669/dowload_SDK@v1.0.0/download-sdk/1.0.0/landing-download-sdk.min.js"></script>
+ * <script src="https://cdn.bootcdn.net/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+ * <script src="https://cdn.jsdelivr.net/gh/hemiao6669/dowload_SDK@v1.0.1/download-sdk/1.0.0/landing-download-sdk.min.js"></script>
  * <script>
  *   LandingDownloadSDK.init({
  *     apiDomainBootstrapUrls: [

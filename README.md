@@ -4,7 +4,7 @@
 
 ## 目录内容
 
-- `vendor/crypto-js/4.2.0/crypto-js.min.js`：SDK 依赖的 CryptoJS，全局变量为 `CryptoJS`
+- CryptoJS 依赖改用 BootCDN，页面需要先引入它，全局变量为 `CryptoJS`
 - `download-sdk/1.0.0/landing-download-sdk.min.js`：线上推荐使用的压缩版 SDK
 - `download-sdk/1.0.0/landing-download-sdk.js`：未压缩可读版，方便调试
 
@@ -13,8 +13,8 @@
 当前发布仓库：`hemiao6669/dowload_SDK`
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/hemiao6669/dowload_SDK@v1.0.0/vendor/crypto-js/4.2.0/crypto-js.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/hemiao6669/dowload_SDK@v1.0.0/download-sdk/1.0.0/landing-download-sdk.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/hemiao6669/dowload_SDK@v1.0.1/download-sdk/1.0.0/landing-download-sdk.min.js"></script>
 <script>
   LandingDownloadSDK.init({
     apiDomainBootstrapUrls: [
