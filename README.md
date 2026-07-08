@@ -14,7 +14,7 @@
 
 ```html
 <script src="https://cdn.bootcdn.net/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/hemiao6669/dowload_SDK@v1.0.1/download-sdk/1.0.0/landing-download-sdk.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/hemiao6669/dowload_SDK@v1.0.2/download-sdk/1.0.0/landing-download-sdk.min.js"></script>
 <script>
   LandingDownloadSDK.init({
     apiDomainBootstrapUrls: [
@@ -35,7 +35,7 @@
 
 - 后续 SDK 改动时新建版本目录，例如 `1.0.1`，不要覆盖旧版本
 - 调试版 `landing-download-sdk.js` 不建议给正式页面长期使用
-- jsDelivr 缓存较长，发布新版本时建议同时升级 Git tag，例如 `v1.0.1`
+- jsDelivr 缓存较长，发布新版本时建议同时升级 Git tag，例如 `v1.0.2`
 
 ## API 选线返回格式
 

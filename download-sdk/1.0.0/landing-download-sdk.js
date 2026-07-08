@@ -7,7 +7,7 @@
  * 外部网页示例：
  *
  * <script src="https://cdn.bootcdn.net/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
- * <script src="https://cdn.jsdelivr.net/gh/hemiao6669/dowload_SDK@v1.0.1/download-sdk/1.0.0/landing-download-sdk.min.js"></script>
+ * <script src="https://cdn.jsdelivr.net/gh/hemiao6669/dowload_SDK@v1.0.2/download-sdk/1.0.0/landing-download-sdk.min.js"></script>
  * <script>
  *   LandingDownloadSDK.init({
  *     apiDomainBootstrapUrls: [
@@ -36,6 +36,7 @@
   const IOS_LANDING_PATH = '/fast-cloud/config/landing'
   const DEFAULT_TIMEOUT = 4500
   const DEFAULT_CACHE_KEY = 'landpage_sdk_api_base_url'
+  const CHANNEL_APK_CHECK_TIMEOUT_MS = 2500
   const BIZ_SUCCESS_CODES = ['0000', '200']
   const GATEWAY_SECRET_KEYS = [
     'cmxykjj2nbqhhcca',
@@ -328,6 +329,54 @@
     return urls.length ? urls[Math.floor(Math.random() * urls.length)] : ''
   }
 
+  function buildChannelApkUrl(downloadUrl, inviteCode) {
+    const code = String(inviteCode || '').trim()
+    if (!code) return ''
+
+    try {
+      const url = new URL(downloadUrl)
+      const match = url.pathname.match(/^(.*)(\.apk)$/i)
+      if (!match) return ''
+
+      url.pathname = match[1] + '_' + encodeURIComponent(code) + match[2]
+      return url.toString()
+    } catch (err) {
+      return ''
+    }
+  }
+
+  function isReachableUrl(url) {
+    const controller = new AbortController()
+    const timer = window.setTimeout(function () {
+      controller.abort()
+    }, CHANNEL_APK_CHECK_TIMEOUT_MS)
+
+    return fetch(url, {
+      method: 'HEAD',
+      cache: 'no-store',
+      redirect: 'follow',
+      signal: controller.signal,
+    })
+      .then(function (res) {
+        return res.ok
+      })
+      .catch(function () {
+        return false
+      })
+      .finally(function () {
+        window.clearTimeout(timer)
+      })
+  }
+
+  function pickAndroidDownloadUrl(url, inviteCode) {
+    const channelUrl = buildChannelApkUrl(url, inviteCode)
+    if (!channelUrl) return Promise.resolve(url)
+
+    return isReachableUrl(channelUrl).then(function (reachable) {
+      return reachable ? channelUrl : url
+    })
+  }
+
   function detectDevice() {
     return /iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'IOS' : 'Android'
   }
@@ -388,8 +437,10 @@
         if (!url) {
           return { ok: false, deviceType: deviceType, reason: 'empty', message: '未获取到下载地址' }
         }
-        openUrl(url, downloadOptions.openTarget || '_blank')
-        return { ok: true, deviceType: deviceType, url: url }
+        return pickAndroidDownloadUrl(url, inviteCode).then(function (downloadUrl) {
+          openUrl(downloadUrl, downloadOptions.openTarget || '_blank')
+          return { ok: true, deviceType: deviceType, url: downloadUrl }
+        })
       })
       .catch(function (err) {
         return {
